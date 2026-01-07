@@ -6,25 +6,59 @@
   <title>Luis Gabriel — Game Developer</title>
 
   <style>
+    @keyframes gridMove {
+      0% { background-position: 0 0, 0 0, 50% 0%; }
+      100% { background-position: 40px 40px, 40px 40px, 50% 0%; }
+    }
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0f172a;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0a0a0a;
+      
+      background-image: 
+        linear-gradient(rgba(50, 100, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(50, 100, 255, 0.07) 1px, transparent 1px),
+        radial-gradient(circle at 50% 0%, #1e293b 0%, #000000 80%);
+      
+      background-size: 40px 40px, 40px 40px, 100% 100%;
+      animation: gridMove 3s linear infinite;
+      
       color: #e5e7eb;
       line-height: 1.6;
       overflow-x: hidden;
     }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header, section, footer {
+      position: relative;
+      z-index: 1;
+    }
+
     header {
       text-align: center;
-      padding: 80px 20px;
+      padding: 100px 20px 60px;
     }
+    
     header h1 {
-      font-size: 2.5rem;
+      font-size: 3rem;
       margin-bottom: 10px;
+      text-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+      background: linear-gradient(to right, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     header p {
       color: #94a3b8;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
     }
     section {
       max-width: 1000px;
@@ -32,11 +66,13 @@
       padding: 40px 20px;
     }
     h2 {
-      border-bottom: 2px solid #1e293b;
+      border-bottom: 2px solid #2563eb;
       padding-bottom: 10px;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       margin-top: 60px; 
       font-size: 1.8rem;
+      color: #f8fafc;
+      text-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
     }
     
     .projects {
@@ -46,7 +82,8 @@
     }
     
     .card {
-      background: #020617;
+      background: rgba(10, 10, 15, 0.9);
+      border: 1px solid rgba(255,255,255,0.1);
       padding: 40px 24px;
       border-radius: 12px;
       overflow: hidden;
@@ -55,6 +92,7 @@
       flex-direction: column;
       position: relative;
       min-height: 620px; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     
     .card-header {
@@ -81,6 +119,7 @@
       background: none;
       padding: 0;
       text-shadow: none;
+      color: #fff;
     }
     
     .card-desc {
@@ -115,9 +154,11 @@
       position: relative;
       z-index: 15; 
       align-self: flex-start;
+      box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
     }
     .store-link:hover {
       background: #1d4ed8;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.6);
     }
 
     .cylinder-container {
@@ -198,7 +239,8 @@
     }
 
     .uefn-card {
-      background: #1e293b;
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255,255,255,0.05);
       border-radius: 12px;
       overflow: hidden;
       display: flex;
@@ -207,6 +249,7 @@
     }
     .uefn-card:hover {
       transform: translateY(-5px);
+      border-color: #facc15;
     }
 
     .uefn-image-wrapper {
@@ -268,6 +311,16 @@
       padding: 40px;
       color: #64748b;
       font-size: 0.9rem;
+    }
+    
+    footer a {
+      color: #2563eb;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover {
+      color: #60a5fa;
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -488,6 +541,8 @@
   <section>
     <h2>📬 Contact</h2>
     <p>
+      Email: <a href="mailto:luisgkingeski@gmail.com">luisgkingeski@gmail.com</a><br>
+      Phone: +55 42 99853-2215<br>
       LinkedIn: <a href="https://www.linkedin.com/in/luis-gabriel-kingeski-220594168/" target="_blank">linkedin.com/in/luis-gabriel-kingeski</a><br>
       GitHub: <a href="https://github.com/asckov" target="_blank">github.com/asckov</a>
     </p>
