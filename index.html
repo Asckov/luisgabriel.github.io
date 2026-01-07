@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Luis Gabriel — Game Developer</title>
+
   <style>
     body {
       margin: 0;
@@ -11,6 +12,7 @@
       background: #0f172a;
       color: #e5e7eb;
       line-height: 1.6;
+      overflow-x: hidden;
     }
     header {
       text-align: center;
@@ -25,7 +27,7 @@
       font-size: 1.1rem;
     }
     section {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
       padding: 40px 20px;
     }
@@ -33,95 +35,456 @@
       border-bottom: 2px solid #1e293b;
       padding-bottom: 10px;
       margin-bottom: 30px;
+      margin-top: 60px; 
+      font-size: 1.8rem;
     }
+    
     .projects {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
     }
+    
     .card {
       background: #020617;
-      padding: 20px;
+      padding: 40px 24px;
       border-radius: 12px;
-    }
-    .card h3 {
-      margin-top: 0;
-    }
-    .card p {
-      color: #cbd5f5;
-    }
-    .card a {
-      display: inline-block;
-      margin-top: 10px;
-      color: #38bdf8;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .carousel {
-      position: relative;
-      width: 100%;
-      height: 250px;
       overflow: hidden;
-      border-radius: 8px;
-      margin-bottom: 12px;
+      perspective: 1000px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 620px; 
     }
-    .carousel-image {
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 60px; 
+      position: relative;
+      z-index: 10;
+    }
+    
+    .card-header img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .card h3 { 
+      margin-top: 0; 
+      margin-bottom: 0; 
+      font-size: 1.4rem;
+      background: none;
+      padding: 0;
+      text-shadow: none;
+    }
+    
+    .card-desc {
+      color: #cbd5f5;
+      position: relative;
+      z-index: 10; 
+      flex-grow: 1; 
+      margin-top: 60px; 
+      margin-bottom: 20px;
+      background: none;
+      padding: 0;
+    }
+
+    .card-desc.horizontal-adjust {
+      margin-top: 140px; 
+    }
+    .card-desc.static-adjust {
+      margin-top: 40px;
+    }
+
+    .store-link {
+      display: inline-block;
+      text-decoration: none;
+      background: #2563eb;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: background 0.2s;
+      position: relative;
+      z-index: 15; 
+      align-self: flex-start;
+    }
+    .store-link:hover {
+      background: #1d4ed8;
+    }
+
+    .cylinder-container {
+      position: relative;
+      width: 200px;
+      height: 300px; 
+      margin: 20px auto 0; 
+      transform-style: preserve-3d;
+      z-index: 1; 
+      user-select: none;
+    }
+    .cylinder {
       position: absolute;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      display: none;
+      top: 0;
+      left: 0;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease-out;
+      cursor: grab;
     }
-    .carousel-image.active {
+    .cylinder-item {
+      position: absolute;
+      top: 0;
+      left: 20px; 
+      width: 160px; 
+      height: 285px; 
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      backface-visibility: hidden; 
+      -webkit-box-reflect: below 5px linear-gradient(transparent, transparent, rgba(0,0,0,0.3));
+    }
+    .cylinder-container.horizontal {
+      height: 160px;
+      margin-top: 40px; 
+    }
+    .cylinder-container.horizontal .cylinder-item {
+      width: 240px;  
+      height: 135px; 
+      left: -20px;   
+      top: 10px;     
+    }
+    .cylinder-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; 
+      border-radius: 8px;
       display: block;
+      pointer-events: none;
+      -webkit-user-drag: none;
     }
+
+    .feature-image-container {
+      width: 100%;
+      height: 220px; 
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
+    }
+    .feature-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; 
+      transition: transform 0.5s ease;
+    }
+    .card:hover .feature-image-container img {
+      transform: scale(1.05);
+    }
+
+    .uefn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .uefn-card {
+      background: #1e293b;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s;
+    }
+    .uefn-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .uefn-image-wrapper {
+      width: 100%;
+      aspect-ratio: 16 / 9; 
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .uefn-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    
+    .uefn-card:hover .uefn-image-wrapper img {
+      transform: scale(1.05);
+    }
+
+    .uefn-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .uefn-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .uefn-desc {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+
+    .uefn-link {
+      text-decoration: none;
+      background: #facc15; 
+      color: #000;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .uefn-link:hover {
+      background: #eab308;
+    }
+
     footer {
       text-align: center;
       padding: 40px;
       color: #64748b;
       font-size: 0.9rem;
     }
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .card-header img {
-      width: 60px;
-      height: 60px;
-      border-radius: 8px;
-    }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Luis Gabriel — Game Developer</h1>
     <p>Game Developer focused on gameplay and interactive systems</p>
   </header>
+
   <section>
-    <h2>🎮 Projects</h2>
+    <h2>📱 Mobile Games</h2>
     <div class="projects">
+
       <div class="card">
         <div class="card-header">
-          <img src="images/Slow Motion Giant/icon.webp" alt="Slow Motion Giant Icon">
+          <img src="images/Slow Motion Giant/icon.webp" alt="Icon">
           <h3>Slow Motion Giant</h3>
         </div>
-        <div class="carousel">
-          <img class="carousel-image" src="images/Slow Motion Giant/screen-0.webp" alt="Gameplay 0">
-          <img class="carousel-image" src="images/Slow Motion Giant/screen-1.webp" alt="Gameplay 1">
-          <img class="carousel-image" src="images/Slow Motion Giant/screen-2.webp" alt="Gameplay 2">
-          <img class="carousel-image" src="images/Slow Motion Giant/screen-3.webp" alt="Gameplay 3">
-          <img class="carousel-image" src="images/Slow Motion Giant/screen-4.webp" alt="Gameplay 4">
+        <div class="cylinder-container">
+          <div class="cylinder" id="carousel-1">
+            <div class="cylinder-item"><img src="images/Slow Motion Giant/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Slow Motion Giant/2.webp"></div>
+            <div class="cylinder-item"><img src="images/Slow Motion Giant/3.webp"></div>
+            <div class="cylinder-item"><img src="images/Slow Motion Giant/4.webp"></div>
+            <div class="cylinder-item"><img src="images/Slow Motion Giant/5.webp"></div>
+            <div class="cylinder-item"><img src="images/Slow Motion Giant/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Slow Motion Giant/2.webp"></div>
+          </div>
         </div>
-        <p>Slow Motion Giant is a prototype exploring large-scale slow-motion mechanics. Focused on gameplay experimentation and physics interactions.</p>
+        <p class="card-desc">In this physics-based combat game, players must hurl various objects to defeat a massive colossus. I developed the core combat system and engineered the real-time slow-motion mechanics, enabling precise projectile manipulation and player evasion.</p>
       </div>
+
+      <div class="card">
+        <div class="card-header">
+          <img src="images/Barcelona Freestyle/icon.webp" alt="Icon">
+          <h3>Barcelona Freestyle</h3>
+        </div>
+        <div class="cylinder-container horizontal">
+          <div class="cylinder" id="carousel-2">
+            <div class="cylinder-item"><img src="images/Barcelona Freestyle/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Barcelona Freestyle/2.webp"></div>
+            <div class="cylinder-item"><img src="images/Barcelona Freestyle/3.webp"></div>
+            <div class="cylinder-item"><img src="images/Barcelona Freestyle/4.webp"></div>
+            <div class="cylinder-item"><img src="images/Barcelona Freestyle/5.webp"></div>
+            <div class="cylinder-item"><img src="images/Barcelona Freestyle/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Barcelona Freestyle/2.webp"></div>
+          </div>
+        </div>
+        <p class="card-desc horizontal-adjust">I was actively involved in the entire development lifecycle, implementing core gameplay mechanics, an asynchronous PvP system, deck-building features, and comprehensive UI systems.</p>
+        <a href="https://play.google.com/store/apps/details?id=com.hermitcrabstudio.f2p.barcafreestyle" target="_blank" class="store-link">View on Store</a>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Horizon Chase</h3>
+        </div>
+        
+        <div class="feature-image-container">
+          <img src="images/Horizon.webp" alt="Horizon Chase Gameplay">
+        </div>
+        
+        <p class="card-desc static-adjust">Collaborated on the "Sunrise Edition" for Gameloft. Focused on porting the game codebase, optimizing performance for specific hardware, and adapting gameplay systems for new distribution channels.</p>
+        <a href="https://play.google.com/store/apps/details?id=com.aquiris.horizonchase" target="_blank" class="store-link">View on Store</a>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <img src="images/Manchester City Game/icon.webp" alt="Icon">
+          <h3>Man City Freestyle</h3>
+        </div>
+        <div class="cylinder-container">
+          <div class="cylinder" id="carousel-3">
+            <div class="cylinder-item"><img src="images/Manchester City Game/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Manchester City Game/2.webp"></div>
+            <div class="cylinder-item"><img src="images/Manchester City Game/3.webp"></div>
+            <div class="cylinder-item"><img src="images/Manchester City Game/4.webp"></div>
+            <div class="cylinder-item"><img src="images/Manchester City Game/5.webp"></div>
+            <div class="cylinder-item"><img src="images/Manchester City Game/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Manchester City Game/2.webp"></div>
+          </div>
+        </div>
+        <p class="card-desc">Contributed to key functionalities, focusing primarily on implementing UI components and refining gameplay mechanics to ensure a smooth user experience.</p>
+        <a href="https://play.google.com/store/apps/details?id=com.hermitcrabstudio.f2p.mancityfreestyleacademy" target="_blank" class="store-link">View on Store</a>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <img src="images/Time Brasil .gameplay/icon.webp" alt="Icon">
+          <h3>Time Brasil</h3>
+        </div>
+        <div class="cylinder-container">
+          <div class="cylinder" id="carousel-4">
+            <div class="cylinder-item"><img src="images/Time Brasil .gameplay/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Time Brasil .gameplay/2.webp"></div>
+            <div class="cylinder-item"><img src="images/Time Brasil .gameplay/3.webp"></div>
+            <div class="cylinder-item"><img src="images/Time Brasil .gameplay/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Time Brasil .gameplay/2.webp"></div>
+            <div class="cylinder-item"><img src="images/Time Brasil .gameplay/3.webp"></div>
+          </div>
+        </div>
+        <p class="card-desc">Worked on the development and implementation of various mini-games integrated within the application, ensuring diverse and engaging gameplay loops.</p>
+        <a href="https://play.google.com/store/apps/details?id=com.hermitcrabstudio.f2p.gameplaycob" target="_blank" class="store-link">View on Store</a>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <img src="images/Benfica Football Merge/icon.webp" alt="Icon">
+          <h3>Benfica Football Merge</h3>
+        </div>
+        <div class="cylinder-container">
+          <div class="cylinder" id="carousel-5">
+            <div class="cylinder-item"><img src="images/Benfica Football Merge/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Benfica Football Merge/2.webp"></div>
+            <div class="cylinder-item"><img src="images/Benfica Football Merge/3.webp"></div>
+            <div class="cylinder-item"><img src="images/Benfica Football Merge/4.webp"></div>
+            <div class="cylinder-item"><img src="images/Benfica Football Merge/5.webp"></div>
+            <div class="cylinder-item"><img src="images/Benfica Football Merge/1.webp"></div>
+            <div class="cylinder-item"><img src="images/Benfica Football Merge/2.webp"></div>
+          </div>
+        </div>
+        <p class="card-desc">Focused primarily on designing and implementing the core merge mechanics, optimizing the logic for combining items and progression systems.</p>
+        <a href="https://play.google.com/store/apps/details?id=com.hermitcrabgamestudio.f2p.benficamerge" target="_blank" class="store-link">View on Store</a>
+      </div>
+
     </div>
   </section>
+
+  <section>
+    <h2>🏝️ UEFN / Fortnite Maps</h2>
+    <div class="uefn-grid">
+      
+      <div class="uefn-card">
+        <div class="uefn-image-wrapper">
+          <img src="images/Fortnite/rio.webp" alt="Rio Heights">
+        </div>
+        <div class="uefn-content">
+          <div class="uefn-title">Hide & Seek: Rio Heights</div>
+          <div class="uefn-desc">Worked on final polish and completion of the map environment and mechanics.</div>
+          <a href="https://www.fortnite.com/@hermitcrab/9234-4701-5715?lang=pt-BR" target="_blank" class="uefn-link">Play on Fortnite</a>
+        </div>
+      </div>
+
+      <div class="uefn-card">
+        <div class="uefn-image-wrapper">
+          <img src="images/Fortnite/skate.webp" alt="Skate Slide">
+        </div>
+        <div class="uefn-content">
+          <div class="uefn-title">Skate Slide Simulator</div>
+          <div class="uefn-desc">Programmed all core mechanics, physics interactions, and player movement systems.</div>
+          <a href="https://www.fortnite.com/@hermitcrab/7178-9189-3451?lang=pt-BR" target="_blank" class="uefn-link">Play on Fortnite</a>
+        </div>
+      </div>
+
+      <div class="uefn-card">
+        <div class="uefn-image-wrapper">
+          <img src="images/Fortnite/onlyup.webp" alt="OnlyUp">
+        </div>
+        <div class="uefn-content">
+          <div class="uefn-title">Sports OnlyUp</div>
+          <div class="uefn-desc">Full programming responsibility for vertical progression logic and obstacle mechanics.</div>
+          <a href="https://www.fortnite.com/@hermitcrab/7780-8097-0083?lang=pt-BR" target="_blank" class="uefn-link">Play on Fortnite</a>
+        </div>
+      </div>
+
+      <div class="uefn-card">
+        <div class="uefn-image-wrapper">
+          <img src="images/Fortnite/soccer2.webp" alt="Soccer Tycoon">
+        </div>
+        <div class="uefn-content">
+          <div class="uefn-title">Soccer Tycoon 2</div>
+          <div class="uefn-desc">Developed minigame mechanics and interactive tycoon systems.</div>
+          <a href="https://www.fortnite.com/@hermitcrab/6081-4755-9263?lang=pt-BR" target="_blank" class="uefn-link">Play on Fortnite</a>
+        </div>
+      </div>
+
+      <div class="uefn-card">
+        <div class="uefn-image-wrapper">
+          <img src="images/Fortnite/winter.webp" alt="Winter Sports">
+        </div>
+        <div class="uefn-content">
+          <div class="uefn-title">Winter Sports</div>
+          <div class="uefn-desc">Programmed all gameplay systems, including vehicle handling and scoring.</div>
+          <a href="https://www.fortnite.com/@hermitcrab/7474-2891-9022?lang=pt-BR" target="_blank" class="uefn-link">Play on Fortnite</a>
+        </div>
+      </div>
+
+      <div class="uefn-card">
+        <div class="uefn-image-wrapper">
+          <img src="images/Fortnite/cars.webp" alt="Car Tuning">
+        </div>
+        <div class="uefn-content">
+          <div class="uefn-title">Car Tuning Tycoon</div>
+          <div class="uefn-desc">Implemented complete tycoon economy and robbery systems mechanics.</div>
+          <a href="https://www.fortnite.com/@hermitcrab/5473-4322-7315?lang=pt-BR" target="_blank" class="uefn-link">Play on Fortnite</a>
+        </div>
+      </div>
+
+      <div class="uefn-card">
+        <div class="uefn-image-wrapper">
+          <img src="images/Fortnite/escape.webp" alt="Escape Hunter">
+        </div>
+        <div class="uefn-content">
+          <div class="uefn-title">Escape Hunter</div>
+          <div class="uefn-desc">Responsible for all Verse programming, game flow, and round logic.</div>
+          <a href="https://www.fortnite.com/@hc_maps/0942-1145-4977?lang=pt-BR" target="_blank" class="uefn-link">Play on Fortnite</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <section>
     <h2>🧠 Technologies</h2>
-    <p>Unity• C# • Git </p>
+    <p>Unity • C# • UEFN • Verse • Git</p>
   </section>
+
   <section>
     <h2>📬 Contact</h2>
     <p>
@@ -129,19 +492,78 @@
       GitHub: <a href="https://github.com/asckov" target="_blank">github.com/asckov</a>
     </p>
   </section>
+
   <footer>
     © 2026 — Luis Gabriel
   </footer>
+
   <script>
-    let currentIndex = 0;
-    const images = document.querySelectorAll('.carousel-image');
-    function showNext() {
-      images[currentIndex].classList.remove('active');
-      currentIndex = (currentIndex + 1) % images.length;
-      images[currentIndex].classList.add('active');
-    }
-    if(images.length > 0) images[0].classList.add('active');
-    setInterval(showNext, 3000);
+    const containers = document.querySelectorAll('.cylinder-container');
+
+    containers.forEach(container => {
+      const carousel = container.querySelector('.cylinder');
+      const items = carousel.querySelectorAll('.cylinder-item');
+      const totalItems = items.length;
+      
+      const angleStep = 360 / totalItems;
+      const radius = 260; 
+
+      items.forEach((item, index) => {
+        const angle = angleStep * index;
+        item.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+      });
+
+      let isDragging = false;
+      let startX = 0;
+      let currentRotation = 0;
+      let previousRotation = 0;
+
+      container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX;
+        carousel.style.transition = 'none';
+        e.preventDefault(); 
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX;
+        const moveX = x - startX;
+        currentRotation = previousRotation + (moveX / 2);
+        carousel.style.transform = `rotateY(${currentRotation}deg)`;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          previousRotation = currentRotation;
+          carousel.style.transition = 'transform 0.5s ease-out';
+        }
+      });
+
+      container.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].pageX;
+        carousel.style.transition = 'none';
+      }, {passive: false});
+
+      window.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const x = e.touches[0].pageX;
+        const moveX = x - startX;
+        currentRotation = previousRotation + (moveX / 2);
+        carousel.style.transform = `rotateY(${currentRotation}deg)`;
+      }, {passive: false});
+
+      window.addEventListener('touchend', () => {
+        if (isDragging) {
+          isDragging = false;
+          previousRotation = currentRotation;
+          carousel.style.transition = 'transform 0.5s ease-out';
+        }
+      });
+    });
   </script>
 </body>
 </html>
